@@ -1,17 +1,21 @@
 package com.proflucas.aulafirebaseranking
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 
 class MainActivity : ComponentActivity() {
 
@@ -36,12 +40,22 @@ class MainActivity : ComponentActivity() {
         val campoNome = findViewById<EditText>(R.id.campoNome)
         val textoPontuacao = findViewById<TextView>(R.id.textoPontuacao)
         val textoRanking = findViewById<TextView>(R.id.textoRanking)
-        val botaoAumentarPontos =
-            findViewById<Button>(R.id.botaoAumentarPontos)
+        val botaoAumentarPontos = findViewById<Button>(R.id.botaoAumentarPontos)
+        val botaoDiminuirPontos = findViewById<Button>(R.id.botaoDiminuirPontos)
         val botaoSalvar = findViewById<Button>(R.id.botaoSalvar)
 
         botaoAumentarPontos.setOnClickListener {
             pontos++
+            textoPontuacao.text = "Pontuação: $pontos"
+        }
+
+        botaoDiminuirPontos.setOnClickListener {
+            if (pontos <= 0){
+                pontos = 0
+                Toast.makeText(this, "Jogador com 0 pontos!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            pontos--
             textoPontuacao.text = "Pontuação: $pontos"
         }
 
